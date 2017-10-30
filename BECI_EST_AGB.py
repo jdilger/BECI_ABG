@@ -73,10 +73,10 @@ with open('groundpoint.bat', 'w') as out_gp:
 
 #run created bat files
 p = Popen('groundpoint.bat', cwd=cd)
-stdout, stderr = p.communicate()
+p.communicate()
    
 p = Popen('bare_earth_model.bat', cwd=cd)
-stdout, stderr = p.communicate()
+p.communicate()
 
 
 #CHM
@@ -87,7 +87,7 @@ with open('chm.bat', 'w') as out_chm:
 
 #run chm bat
 p = Popen('chm.bat', cwd=cd)
-stdout, stderr = p.communicate()
+p.communicate()
 
 
 
@@ -154,7 +154,7 @@ stdout, stderr = p.communicate()
 ##
 ###run can max summary files
 ##p = Popen('python mergecsv.py', cwd=wdCanMax)
-##stdout, stderr= p.communicate() 
+##p.communicate() 
 ##
 ###delete copy of merge
 ##os.remove(wdCanMax + '\\mergecsv.py')
