@@ -35,6 +35,12 @@ def movebats(src, trgt):
     print(filelist)
     for bat in filelist:
         shutil.move(bat, trgt)
+#function to run batchfiles
+def runBat(*argv):
+    for bat in argv:    
+        a = os.getcwd()
+        p = Popen( "%s"%(bat), cwd=a)
+        p.communicate()
 
 
 
@@ -72,22 +78,21 @@ with open('groundpoint.bat', 'w') as out_gp:
         out_gp.write(gp_txt + gp_name + tile + cellsize + cdlas + tile + ' \n')
 
 #run created bat files
-p = Popen('groundpoint.bat', cwd=cd)
-p.communicate()
-   
-p = Popen('bare_earth_model.bat', cwd=cd)
-p.communicate()
+runBat('groundpoint.bat','bare_earth_model.bat')
 
+canmax_txt = 'c:\\fusion\canopymaxima /threshold:2 /shape /img24 /summary /projection:'
 
 #CHM
 #write new chm .bat
 with open('chm.bat', 'w') as out_chm:
     for tile in studyarealas:
         out_chm.write(chm_txt + ground + bem_name + tile + '.dtm ' + chm_name + tile + '.dtm' + gen_param + cdlas + tile + '\n')
+with open('canopymax.bat', 'w') as out_canmax:
+    for tile in studyarealas:
+        out_canmax.write(canmax_txt + chm_name + tile + '.dtm ' + chm_name + tile + '.dtm ' + cm_name + tile + '.csv' + '\n')
 
 #run chm bat
-p = Popen('chm.bat', cwd=cd)
-p.communicate()
+runBat('chm.bat','canopymax.bat')
 
 
 
@@ -104,8 +109,8 @@ p.communicate()
 ##out_clip.close()
 ##
 ###run the bat
-##p = Popen('clipplots.bat', cwd=cd)
-##p.communicate()
+##runBat('clipplots.bat')
+##
 ##
 ##
 ###now to run all that ish again on the plot lvl
@@ -140,21 +145,13 @@ p.communicate()
 ##        
 ##
 ###run the batzzz
-##p = Popen('plots_gp.bat', cwd=cd)
-##p.communicate()
-##p = Popen('plots_bem.bat', cwd=cd)
-##p.communicate()
-##p = Popen('plots_chm.bat', cwd=cd)
-##p.communicate()
-##p = Popen('plots_canmax.bat', cwd=cd)
-##p.communicate()
+##runBat('plots_gp.bat','plots_bem.bat','plots_chm.bat','plots_canmax.bat')
 ##
 ###copy canmax concatenate .py to correct dir
 ##shutil.copy2( cd + '\\mergecsv.py', wdCanMax) # target filename is /dst/dir/file.ext
 ##
 ###run can max summary files
-##p = Popen('python mergecsv.py', cwd=wdCanMax)
-##p.communicate() 
+##runBat('python mergecsv.py') 
 ##
 ###delete copy of merge
 ##os.remove(wdCanMax + '\\mergecsv.py')
